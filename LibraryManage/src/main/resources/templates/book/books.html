@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图书列表</title>
+</head>
+<body>
+  <div id="books" align="center">
+    <h3>图书列表</h3>
+    <h4 id = "status"></h4>
+
+    <th:block th:if="${host}">
+      <table cellpadding="10">
+        <tr>
+          <td>[[${host.name}]]</td>
+          <td><a th:href="@{/users/logout}">退出登录</a> </td>
+        </tr>
+      </table>
+    </th:block>
+    <th:block th:if="!${host}">
+      <h5>未登录<a th:href="@{/users/login}">登录</a><a th:href="@{/users/register}">注册</a> </h5>
+    </th:block>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>书名</th>
+      <th>作者</th>
+      <th>价格</th>
+      <th>状态</th>
+      <th colspan="2" align="center">
+        <a th:href="@{/books}" target="_blank">添加</a>
+      </th>
+    </tr>
+    <th:block th:each="book : ${books}">
+      <tr>
+        <td><a>[[${book.id}]]</a></td>
+        <td>[[${book.name}]]</td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.price}"></td>
+        <td th:if="${book.status} == 0">在库</td>
+        <td th:if="${book.status} != 0">已借出</td>
+        <td><a th:href="@{'/books/delete/' + ${book.id}}">借书</a> </td>
+        <td><a th:href="@{'/books/recover/' + ${book.id}}">还书</a> </td>
+      </tr>
+    </th:block>
+  </table>
+  </div>
+
+</body>
+</html>
