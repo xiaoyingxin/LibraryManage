@@ -46,7 +46,6 @@ public class HostInfoInterceptor implements HandlerInterceptor {
                 User user = userService.getUser(ticket.getUserId());
                 ConcurrentUtils.setHost(user);
                 log.info(ConcurrentUtils.getHost().toString());
-
             }
         }
         return true;

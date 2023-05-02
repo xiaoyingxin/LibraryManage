@@ -9,7 +9,6 @@ import com.xiaoxin.service.UserService;
 import com.xiaoxin.utils.ConcurrentUtils;
 import com.xiaoxin.utils.MD5;
 import com.xiaoxin.utils.TicketUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +60,6 @@ public class LoginBiz {
             t = TicketUtils.next(user.getId());
             ticketService.addTicket(t);
         }
-
         ConcurrentUtils.setHost(user);
         return t.getTicket();
     }

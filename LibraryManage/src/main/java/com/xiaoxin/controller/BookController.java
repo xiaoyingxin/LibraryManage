@@ -7,11 +7,18 @@ import com.xiaoxin.service.BookService;
 import com.xiaoxin.service.HostHolder;
 import com.xiaoxin.service.TicketService;
 import com.xiaoxin.service.UserService;
+import com.xiaoxin.utils.ConcurrentUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
@@ -28,16 +35,19 @@ public class BookController {
 
     //跳转到主页
     @GetMapping("/index")
-    public String bookList(Model model,
-                           @CookieValue("t") String t){
-        User host = null;
-        Ticket ticket = ticketService.getTicket(t);
-        if (ticket != null){
-            host = userService.getUser(ticket.getUserId());
+    public String bookList(Model model, HttpServletRequest request,HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        if (cookies!=null) {
+            for (Cookie cookie : cookies) {
+                System.out.println(cookie);
+                Ticket ticket = ticketService.getTicket(cookie.getValue());
+                if (ticket != null){
+                    User user = userService.getUser(ticket.getUserId());
+                   ConcurrentUtils.setHost(user);
+                }
+            }
         }
-
-        //User host = hostHolder.getUser();
-        //log.info(host.toString());
+        User host = ConcurrentUtils.getHost();
         if (host != null) {
             model.addAttribute("host",host);
         }

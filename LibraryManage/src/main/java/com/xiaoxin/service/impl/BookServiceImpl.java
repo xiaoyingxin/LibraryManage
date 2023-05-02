@@ -14,6 +14,7 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     BookDAO bookDAO;
+
     @Override
     public List<Book> getAllBooks() {
         return bookDAO.selectAll();
@@ -31,6 +32,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void recoverBooks(int id) {
-        bookDAO.updateBookStatus(id,BookStatusEnum.NORMAL.getValue());
+        bookDAO.updateBookStatus(id, BookStatusEnum.NORMAL.getValue());
     }
 }

@@ -3,6 +3,7 @@ package com.xiaoxin.controller;
 import com.xiaoxin.biz.LoginBiz;
 import com.xiaoxin.model.User;
 import com.xiaoxin.utils.CookieUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,8 +72,10 @@ public class LoginController {
 
     //登出再重定向到主页
     @GetMapping("/users/logout")
-    public String logout(@CookieValue("t")String t){
+    public String logout(@CookieValue("t")String t
+            ,HttpServletRequest request,HttpServletResponse response){
         loginBiz.logout(t);
+        CookieUtils.removeCookie(t,request,response);
         return "redirect:/index";
     }
 }
